@@ -29,6 +29,7 @@ const server = new ApolloServer({
       'editor.cursorShape': 'line'
     }
   },
+  introspection: true,
   context: async ({ req, connection }) => {
     // Authentication + Authorize here
     if (connection) {
