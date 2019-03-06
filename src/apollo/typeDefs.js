@@ -1,19 +1,24 @@
-const { gql } = require('apollo-server-express')
+import { gql } from 'apollo-server-express'
 
 const typeDefs = gql`
-  type Todo {
+  type Bookmark {
     _id: ID
     title: String
-    content: String
+    note: String
+    bookmarkLink: String
   }
   type Query {
-    Todo(_id: ID!): Todo
-    Todos: [Todo]
+    bookmark(_id: ID!): Bookmark
+    bookmarks: [Bookmark]
   }
   type Mutation {
-    createTodo(title: String!, content: String!): Todo
-    updateTodo(_id: ID!, title: String!, content: String!): Todo
-    deleteTodo(_id: ID!): String
+    createBookmark(title: String!, note: String, bookmarkLink: String!): Bookmark
+    updateBookmark(_id: ID!, title: String, note: String, bookmarkLink: String): Bookmark
+    deleteBookmark(_id: ID!): String
+  }
+
+  type Subscription {
+    bookmarkUpdate: Bookmark
   }
 `
 

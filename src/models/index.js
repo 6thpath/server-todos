@@ -1,5 +1,5 @@
-import todo from './todo'
+import bookmark from './bookmark'
 
 export default {
-  todo
+  bookmark
 }

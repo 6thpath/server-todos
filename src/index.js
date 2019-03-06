@@ -15,27 +15,27 @@ mongoose.connect(
 
 const app = express()
 app.use(cors())
-app.use((_, res, next) => {
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
-  return next()
-})
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  tracing: false,
   playground: {
     settings: {
-      'editor.cursorShape': 'line'
+      'general.betaUpdates': false,
+      'editor.cursorShape': 'line', // possible values: 'line', 'block', 'underline'
+      'editor.fontSize': 14,
+      'editor.fontFamily': `'Source Code Pro', 'Consolas', 'Inconsolata', 'Droid Sans Mono', 'Monaco', monospace`,
+      'editor.theme': 'dark', // possible values: 'dark', 'light'
+      'editor.reuseHeaders': true, // new tab reuses headers from last tab
+      'request.credentials': 'omit', // possible values: 'omit', 'include', 'same-origin'
+      'tracing.hideTracingResponse': true
     }
   },
   introspection: true,
-  context: async ({ req, connection }) => {
-    // Authentication + Authorize here
+  context: async ({ connection }) => {
     if (connection) {
       return connection.context
     } else {
-      // let token = req.headers.authorization || null
       return { models }
     }
   }
@@ -46,8 +46,6 @@ server.applyMiddleware({ app })
 const httpServer = createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-app.listen({ port:process.env.PORT || 80 }, () => {
+app.listen({ port: process.env.PORT }, () => {
   console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`)
 })
-
-// "start": "nodemon --exec babel-node src/index.js"
